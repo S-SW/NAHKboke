@@ -5,20 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="blog.css" />
     <title>我的个人博客 | 温柔且自由</title>
-    <!-- 引入图标库 -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
     />
-    <style>
-
-    </style>
   </head>
   <body>
-    <!-- 全局磨砂背景遮罩 -->
-    <div class="bg-mask"></div>
-
-    <!-- 顶部导航 -->
     <nav>
       <div class="logo">我的小博客</div>
       <button class="mode-btn" id="modeBtn">
@@ -26,30 +18,24 @@
       </button>
     </nav>
 
-    <!-- 主内容区 -->
     <div class="container">
-      <!-- 左侧个人信息 -->
       <div class="ios-card info-card">
-        <img
-          src="https://picsum.photos/id/64/200/200"
-          alt="头像"
-          class="avatar"
-        />
+        <img src="tx.png" alt="头像" class="avatar" />
         <h2>NAHK</h2>
         <p class="desc">热爱生活，记录日常｜温柔上进，慢慢发光✨</p>
         <div class="info-list">
-          <p><i class="fa fa-user-o"></i>昵称：小拾光</p>
-          <p><i class="fa fa-calendar-o"></i>年龄：20+</p>
-          <p><i class="fa fa-map-marker"></i>坐标：人间烟火</p>
+          <p><i class="fa fa-user-o"></i>昵称：NAHK</p>
+          <p><i class="fa fa-calendar-o"></i>年龄：20</p>
+          <p><i class="fa fa-map-marker"></i>坐标：厦门</p>
           <p><i class="fa fa-heart-o"></i>爱好：记录、生活、治愈一切</p>
           <p>
             <i class="fa fa-comment-o"></i
             >简介：平凡日子里，收集所有温柔与美好，用文字记录岁岁年年。
           </p>
+          <p><i class="fa fa-envelope-o"></i>邮箱：NAHK209259@outlook.com</p>
         </div>
       </div>
 
-      <!-- 右侧日记区域 -->
       <div class="ios-card diary-card">
         <h3 class="card-title"><i class="fa fa-book-o"></i>我的日记碎碎念</h3>
         <textarea
@@ -59,11 +45,10 @@
         ></textarea>
         <button class="publish-btn" id="publishBtn">发布日记</button>
 
-        <div class="diary-list" id="diaryList">
-          <!-- 日记动态添加区域 -->
-        </div>
+        <div class="diary-list" id="diaryList"></div>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="blog.js"></script>
   </body>
