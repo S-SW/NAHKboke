@@ -1,0 +1,242 @@
+      /* 全局变量与设计系统 */
+      :root {
+        --bg-color: #f8fafc;
+        --card-bg: rgba(255, 255, 255, 0.85);
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --accent-color: #6366f1; /* 优雅的靛蓝色 */
+        --accent-hover: #4f46e5;
+        --border-color: rgba(226, 232, 240, 0.8);
+        --radius: 16px;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* 基础样式重置 */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        line-height: 1.6;
+        background-image:
+          radial-gradient(
+            at 0% 0%,
+            rgba(99, 102, 241, 0.1) 0px,
+            transparent 50%
+          ),
+          radial-gradient(
+            at 100% 100%,
+            rgba(244, 63, 94, 0.05) 0px,
+            transparent 50%
+          );
+        background-attachment: fixed;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        transition: var(--transition);
+      }
+
+      /* 顶部导航栏 */
+      header {
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background-color: rgba(248, 250, 252, 0.8);
+        border-bottom: 1px solid var(--border-color);
+        z-index: 100;
+      }
+
+      .nav-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 2rem;
+      }
+
+      .logo {
+        font-size: 1.3rem;
+        font-weight: 700;
+        background: linear-gradient(45deg, #6366f1, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .nav-links a {
+        margin-left: 1.5rem;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--accent-color);
+      }
+
+      /* 主体布局 */
+      .main-container {
+        max-width: 1000px;
+        margin: 3rem auto;
+        padding: 0 2rem;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2.5rem;
+      }
+
+      /* 个人简介侧边栏 */
+      .profile-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        padding: 2rem;
+        text-align: center;
+        height: fit-content;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        backdrop-filter: blur(8px);
+      }
+
+      .avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #6366f1, #ec4899);
+        margin: 0 auto 1.2rem;
+        padding: 3px;
+      }
+
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #fff;
+      }
+
+      .profile-card h2 {
+        font-size: 1.4rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .profile-card p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .social-links a {
+        display: inline-block;
+        margin: 0 0.5rem;
+        padding: 0.5rem 1rem;
+        background: #f1f5f9;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+      }
+
+      .social-links a:hover {
+        background: var(--accent-color);
+        color: white;
+      }
+
+      /* 文章列表区域 */
+      .posts-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .post-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        transition: var(--transition);
+        cursor: pointer;
+      }
+
+      .post-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(99, 102, 241, 0.08);
+        border-color: rgba(99, 102, 241, 0.2);
+      }
+
+      .post-meta {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-bottom: 0.8rem;
+        display: flex;
+        gap: 1rem;
+      }
+
+      .post-tag {
+        background: rgba(99, 102, 241, 0.1);
+        color: var(--accent-color);
+        padding: 0.1rem 0.6rem;
+        border-radius: 6px;
+        font-weight: 600;
+      }
+
+      .post-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        transition: var(--transition);
+      }
+
+      .post-card:hover .post-title {
+        color: var(--accent-color);
+      }
+
+      .post-excerpt {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+      }
+
+      .read-more {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      /* 页脚 */
+      footer {
+        text-align: center;
+        padding: 3rem 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        border-top: 1px solid var(--border-color);
+        margin-top: 5rem;
+      }
+
+      /* 响应式设计（手机端自动适配） */
+      @media (max-width: 768px) {
+        .main-container {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+          margin: 1.5rem auto;
+        }
+        .profile-card {
+          order: -1; /* 手机端个人简介移到最上方 */
+        }
+        .nav-container {
+          padding: 1rem;
+        }
+      }
