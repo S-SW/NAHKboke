@@ -254,3 +254,21 @@ body.dark .diary-item {
     position: static;
   }
 }
+/* 当 body 没有 dark 类时（即白天模式），修改文字颜色为深色 */
+body:not(.dark) .ios-card,
+body:not(.dark) .logo,
+body:not(.dark) .diary-input,
+body:not(.dark) .diary-item {
+    color: #334155 !important; /* 优雅的深灰色，比纯黑更有高级感 */
+    text-shadow: none;        /* 白天模式去掉文字阴影，更清晰 */
+}
+
+/* 白天模式下，输入框的占位符颜色也要调整 */
+body:not(.dark) .diary-input::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* 白天模式下，按钮稍微加深一点对比度 */
+body:not(.dark) .publish-btn {
+    background: rgba(70, 150, 255, 0.8) !important;
+}
