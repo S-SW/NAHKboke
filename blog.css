@@ -1,254 +1,256 @@
-      /* 全局重置 */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family:
-          -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC",
-          sans-serif;
-        transition: all 0.4s ease;
-      }
+/* 全局重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC",
+    sans-serif;
+  transition: all 0.4s ease;
+}
 
-      /* 全屏背景 */
-      body {
-        width: 100vw;
-        height: 100vh;
-        overflow-x: hidden;
-        background: url("bg2.jpg") no-repeat
-          center center;
-        background-size: cover;
-        transition: background 0.4s ease;
-      }
+/* 全屏背景 - 修改为高清网络壁纸，去除 404 报错 */
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  background: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80") no-repeat
+    center center;
+  background-size: cover;
+  background-attachment: fixed;
+  transition: background 0.4s ease;
+}
 
-      /* 夜间模式背景 */
-      body.dark {
-        background: url("background.png") no-repeat
-          center center;
-        background-size: cover;
-      }
+/* 夜间模式背景 - 修改为极简暗色星空壁纸 */
+body.dark {
+  background: url("https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=1920&q=80") no-repeat
+    center center;
+  background-size: cover;
+  background-attachment: fixed;
+}
 
-      /* 全局磨砂遮罩 */
-      .bg-mask {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        z-index: -1;
-      }
+/* 全局磨砂遮罩 - 根据需求：去除了 blur(8px) 模糊效果 */
+.bg-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.1); /* 仅保留极微弱的白色半透明提亮 */
+  z-index: -1;
+}
 
-      body.dark .bg-mask {
-        background: rgba(0, 0, 0, 0.25);
-      }
+body.dark .bg-mask {
+  background: rgba(0, 0, 0, 0.3); /* 夜间模式下稍微压暗背景，保护视力 */
+}
 
-      /* 顶部导航栏 */
-      nav {
-        width: 90%;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+/* 顶部导航栏 */
+nav {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-      .logo {
-        font-size: 24px;
-        font-weight: 600;
-        color: #fff;
-        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
+.logo {
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
 
-      .mode-btn {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 50px;
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        color: #fff;
-        font-size: 14px;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      }
+.mode-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
 
-      .mode-btn:hover {
-        background: rgba(255, 255, 255, 0.4);
-        transform: translateY(-2px);
-      }
+.mode-btn:hover {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
 
-      body.dark .mode-btn {
-        background: rgba(0, 0, 0, 0.3);
-      }
+body.dark .mode-btn {
+  background: rgba(0, 0, 0, 0.4);
+}
 
-      body.dark .mode-btn:hover {
-        background: rgba(0, 0, 0, 0.5);
-      }
+body.dark .mode-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
 
-      /* 主容器 */
-      .container {
-        width: 90%;
-        max-width: 1200px;
-        margin: 40px auto;
-        display: grid;
-        grid-template-columns: 320px 1fr;
-        gap: 30px;
-      }
+/* 主容器 */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 40px auto;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 30px;
+}
 
-      /* iOS磨砂卡片通用样式 */
-      .ios-card {
-        border-radius: 20px;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
-        padding: 30px;
-        color: #fff;
-      }
+/* iOS磨砂卡片通用样式 - 这里内部的毛玻璃效果保留，以便看清文字 */
+.ios-card {
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 30px;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
 
-      body.dark .ios-card {
-        background: rgba(0, 0, 0, 0.25);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      }
+body.dark .ios-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
 
-      /* 左侧个人信息卡片 */
-      .info-card {
-        position: sticky;
-        top: 40px;
-        height: fit-content;
-        text-align: center;
-      }
+/* 左侧个人信息卡片 */
+.info-card {
+  position: sticky;
+  top: 40px;
+  height: fit-content;
+  text-align: center;
+}
 
-      .avatar {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        margin: 0 auto 20px;
-        border: 3px solid rgba(255, 255, 255, 0.4);
-        object-fit: cover;
-      }
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  object-fit: cover;
+}
 
-      .info-card h2 {
-        font-size: 26px;
-        margin-bottom: 10px;
-        font-weight: 600;
-      }
+.info-card h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
 
-      .info-card .desc {
-        font-size: 15px;
-        line-height: 1.8;
-        opacity: 0.95;
-        margin-bottom: 20px;
-      }
+.info-card .desc {
+  font-size: 15px;
+  line-height: 1.8;
+  opacity: 0.95;
+  margin-bottom: 20px;
+}
 
-      .info-list {
-        text-align: left;
-        line-height: 2.2;
-        font-size: 14px;
-      }
+.info-list {
+  text-align: left;
+  line-height: 2.2;
+  font-size: 14px;
+}
 
-      .info-list i {
-        margin-right: 10px;
-        width: 20px;
-      }
+.info-list i {
+  margin-right: 10px;
+  width: 20px;
+}
 
-      /* 右侧日记区域 */
-      .diary-card {
-        min-height: 600px;
-      }
+/* 右侧日记区域 */
+.diary-card {
+  min-height: 600px;
+}
 
-      .card-title {
-        font-size: 22px;
-        margin-bottom: 25px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
+.card-title {
+  font-size: 22px;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-      /* 发布日记表单 */
-      .diary-input {
-        width: 100%;
-        padding: 18px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(8px);
-        color: #fff;
-        font-size: 15px;
-        resize: none;
-        min-height: 120px;
-        margin-bottom: 15px;
-        outline: none;
-      }
+/* 发布日记表单 */
+.diary-input {
+  width: 100%;
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 15px;
+  resize: none;
+  min-height: 120px;
+  margin-bottom: 15px;
+  outline: none;
+}
 
-      body.dark .diary-input {
-        background: rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
+body.dark .diary-input {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
-      .diary-input::placeholder {
-        color: rgba(255, 255, 255, 0.7);
-      }
+.diary-input::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+}
 
-      .publish-btn {
-        padding: 12px 30px;
-        border: none;
-        border-radius: 50px;
-        background: rgba(70, 150, 255, 0.6);
-        backdrop-filter: blur(10px);
-        color: #fff;
-        font-size: 15px;
-        cursor: pointer;
-        float: right;
-      }
+.publish-btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 50px;
+  background: rgba(70, 150, 255, 0.7);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  float: right;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
 
-      .publish-btn:hover {
-        background: rgba(70, 150, 255, 0.8);
-        transform: translateY(-2px);
-      }
+.publish-btn:hover {
+  background: rgba(70, 150, 255, 0.9);
+  transform: translateY(-2px);
+}
 
-      /* 日记列表 */
-      .diary-list {
-        margin-top: 40px;
-        clear: both;
-      }
+/* 日记列表 */
+.diary-list {
+  margin-top: 40px;
+  clear: both;
+}
 
-      .diary-item {
-        padding: 20px;
-        border-radius: 15px;
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        margin-bottom: 20px;
-      }
+.diary-item {
+  padding: 20px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 20px;
+}
 
-      body.dark .diary-item {
-        background: rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-      }
+body.dark .diary-item {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
 
-      .diary-time {
-        font-size: 12px;
-        opacity: 0.8;
-        margin-bottom: 10px;
-      }
+.diary-time {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
 
-      .diary-content {
-        font-size: 15px;
-        line-height: 1.8;
-      }
+.diary-content {
+  font-size: 15px;
+  line-height: 1.8;
+}
 
-      /* 适配移动端 */
-      @media (max-width: 900px) {
-        .container {
-          grid-template-columns: 1fr;
-        }
-        .info-card {
-          position: static;
-        }
-      }
+/* 适配移动端 */
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+  .info-card {
+    position: static;
+  }
+}
