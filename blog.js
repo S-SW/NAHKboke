@@ -23,21 +23,34 @@ const textBlacklist = [
   "草泥马", "曹尼玛", "操尼玛"
 ];
 
-// ==================== 3. 日夜模式切换 ====================
+// ==================== 3. 全局同步日夜模式切换 ====================
 const modeBtn = document.getElementById("modeBtn");
 const body = document.body;
-let isDark = false;
 
-modeBtn.addEventListener("click", () => {
-  isDark = !isDark;
-  body.classList.toggle("dark");
+// 【修改这里】：如果本地存储没有记录，默认给 true（也就是夜间模式）
+let isDark = localStorage.getItem("theme_dark") !== "false"; 
+
+function updateThemeUI() {
   if (isDark) {
-    modeBtn.innerHTML = '<i class="fa fa-sun-o"></i> 日间模式';
+    body.classList.add("dark");
+    if (modeBtn) modeBtn.innerHTML = '<i class="fa fa-sun-o"></i> 日间模式';
   } else {
-    modeBtn.innerHTML = '<i class="fa fa-moon-o"></i> 夜间模式';
+    body.classList.remove("dark");
+    if (modeBtn) modeBtn.innerHTML = '<i class="fa fa-moon-o"></i> 夜间模式';
   }
-});
+}
 
+// 立即渲染主题
+updateThemeUI();
+
+// 监听按钮点击
+if (modeBtn) {
+  modeBtn.addEventListener("click", () => {
+    isDark = !isDark;
+    localStorage.setItem("theme_dark", isDark); // 写入共享存储
+    updateThemeUI();
+  });
+}
 // ==================== 4. 云端留言/日记功能 ====================
 const publishBtn = document.getElementById("publishBtn");
 const usernameInput = document.getElementById("usernameInput");

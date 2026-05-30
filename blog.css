@@ -378,3 +378,51 @@ body.dark .info-list h3 {
   background: rgba(99, 102, 241, 0.1); /* 悬停时带有一层淡淡的靛蓝色背景 */
   text-decoration: none; /* 抛弃传统的下划线，改用背景色更现代 */
 }
+/* ====== 新增：留言板顶部栏两端对齐容器 ====== */
+.card-header-bar {
+  display: flex;
+  justify-content: space-between; /* 关键：让标题在左，按钮在右，绝对对称 */
+  align-items: center;            /* 水平居中对齐 */
+  margin-bottom: 25px;            /* 保持和下方的输入框间距 */
+  width: 100%;
+}
+
+/* 覆盖原本的 card-title 底部外边距，改由父容器控制 */
+.diary-card .card-title {
+  margin-bottom: 0 !important;
+}
+
+/* “NAHK日记”跳转按钮的胶囊式精致设计 */
+.diary-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--accent-color); /* 自动采用你定义的靛蓝色 */
+  background: rgba(99, 102, 241, 0.08); /* 淡淡的靛蓝色微透明背景 */
+  border: 1px solid rgba(99, 102, 241, 0.15);
+  border-radius: 20px; /* 圆润的胶囊形状 */
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 夜间模式下稍微调暗按钮背景，防止刺眼 */
+body.dark .diary-link-btn {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+/* 悬停时的丝滑过渡动画反馈 */
+.diary-link-btn:hover {
+  background: var(--accent-color); /* 变成纯色背景 */
+  color: #ffffff !important;        /* 文字变白 */
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2); /* 淡淡的光晕效果 */
+  transform: translateY(-1px);      /* 轻微上浮 */
+}
+
+.diary-link-btn:active {
+  transform: translateY(1px);       /* 点击时有按压反馈 */
+}
