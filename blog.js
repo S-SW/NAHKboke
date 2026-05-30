@@ -60,7 +60,7 @@ renderDiary();
 publishBtn.addEventListener("click", async () => {
   const content = diaryInput.value.trim();
   if (!content) {
-    alert("请输入日记内容！");
+    alert("请输入留言内容！？");
     return;
   }
 
