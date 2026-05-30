@@ -265,3 +265,55 @@ body.dark .diary-item {
     position: static;
   }
 }
+
+/* 新增：昵称输入框样式 */
+.username-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: transparent;
+  color: inherit;
+  font-size: 14px;
+  margin-bottom: 15px; /* 和下方的文本框保持间距 */
+  outline: none;
+}
+
+body.dark .username-input {
+  border: 1px solid #475569;
+}
+
+.username-input::placeholder {
+  color: #94a3b8;
+}
+
+/* 留言项头部信息排版 */
+.diary-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.diary-user {
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+.diary-time {
+  color: #94a3b8;
+}
+
+/* 社交链接专属美化 */
+.social-link {
+  color: var(--accent-color); /* 自动使用你原本定义的靛蓝色 */
+  text-decoration: none;      /* 去掉不好看的下划线 */
+  font-weight: 500;
+  margin-left: 5px;
+}
+
+.social-link:hover {
+  text-decoration: underline; /* 鼠标悬停时才显示下划线 */
+  opacity: 0.8;               /* 鼠标悬停时轻微变透明，增加互动感 */
+}
