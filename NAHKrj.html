@@ -9,6 +9,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
     />
+    <link rel="icon" type="image/png" href="tx_circle.png" />
     <style>
       /* 返回按钮样式 */
       .back-home {
@@ -25,11 +26,11 @@
         text-decoration: underline;
       }
 
-      /* ==================== 1. 乱中有序的瀑布流画廊布局 ==================== */
+      /* ==================== 1. 更加宽松、全屏的瀑布流画廊布局 ==================== */
       .diary-gallery {
         display: flex;
         flex-wrap: wrap; /* 允许卡片折行平铺 */
-        gap: 16px; /* 卡片之间的基础间距 */
+        gap: 24px; /* 【调大】卡片之间的基础间距，更加宽松 */
         width: 100%;
         justify-content: center; /* 居中错落分布 */
         padding: 20px 0;
@@ -42,14 +43,14 @@
         }
       }
 
-      /* ==================== 极其狂野的错落卡片基础样式 ==================== */
+      /* ==================== 错落卡片基础样式 ==================== */
       .my-diary-item {
         /* 基础结构 */
         background: var(--card-bg-day) !important;
         border: 1px solid rgba(0, 0, 0, 0.05) !important;
-        border-radius: 12px !important;
-        padding: 14px !important;
-        box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.04);
+        border-radius: 16px !important; /* 【调大】圆角更现代 */
+        padding: 20px !important; /* 【调大】内边距，让卡片内部更舒缓 */
+        box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.04);
         display: flex;
         flex-direction: column;
 
@@ -67,149 +68,37 @@
         box-shadow: 4px 6px 20px rgba(0, 0, 0, 0.25);
       }
 
-      /* 鼠标悬浮到某个卡片时：立刻“摆正”并放大拔高，产生极其惊艳的聚焦互动 */
+      /* 鼠标悬浮到某个卡片时：立刻“摆正”并放大拔高 */
       .my-diary-item:hover {
-        transform: scale(1.12) rotate(0deg) translateY(-8px) !important; /* 强制拉正浮起 */
+        transform: scale(1.08) rotate(0deg) translateY(-8px) !important; /* 强制拉正浮起（大卡片缩放1.08最舒适） */
         z-index: 50; /* 悬浮时处于最上层，不被挡住 */
         box-shadow: 0 15px 30px rgba(99, 102, 241, 0.25) !important;
         border-color: rgba(99, 102, 241, 0.5) !important;
       }
 
-      /* 调整卡片内的元素，让紧凑的卡片排版也很好看 */
+      /* 调整卡片内的元素 */
       .diary-meta {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
       }
       .diary-user {
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 600;
         color: var(--accent-color);
       }
       .diary-time {
         color: #64748b;
-        font-size: 10px;
+        font-size: 11px;
       }
 
       /* 日记内容文本排版 */
       .diary-content {
-        font-size: 14px;
-        line-height: 1.6;
-        word-wrap: break-word;
-        white-space: pre-wrap; /* 保留换行符，让排版更舒缓 */
-      }
-
-      /* ==================== 3. 右下角 iOS 悬浮笔刷按钮 ==================== */
-      .fab-btn {
-        position: fixed;
-        right: 28px;
-        bottom: 28px;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background: var(--accent-color);
-        color: #ffffff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
-        cursor: pointer;
-        z-index: 999;
-        transition:
-          transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-          background 0.2s;
-      }
-      .fab-btn:hover {
-        transform: scale(1.1) translateY(-3px);
-        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
-      }
-      .fab-btn:active {
-        transform: scale(0.95);
-      }
-
-      /* ==================== 4. 毛玻璃雾化弹窗遮罩 ==================== */
-      .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-      }
-      .modal-overlay.active {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      /* 弹窗主卡片 */
-      .modal-card {
-        width: 90%;
-        max-width: 480px;
-        background: var(--card-bg-day);
-        border: 1px solid rgba(255, 255, 255, 0.4);
-        border-radius: 24px;
-        padding: 26px;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
-        transform: scale(0.85);
-        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      }
-      .modal-overlay.active .modal-card {
-        transform: scale(1);
-      }
-      body.dark .modal-card {
-        background: #1e293b;
-        border: 1px solid rgba(255, 255, 255, 0.06);
-      }
-
-      .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 18px;
-      }
-      .modal-title {
         font-size: 15px;
-        font-weight: 600;
-        color: var(--accent-color);
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .modal-close {
-        font-size: 18px;
-        color: #94a3b8;
-        cursor: pointer;
-        transition: color 0.2s;
-      }
-      .modal-close:hover {
-        color: #ef4444;
-      }
-
-      .password-input {
-        width: 100%;
-        padding: 12px 14px;
-        border-radius: 12px;
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        background: rgba(0, 0, 0, 0.01);
-        color: inherit;
-        font-size: 13px;
-        margin-bottom: 14px;
-        outline: none;
-      }
-      body.dark .password-input {
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(255, 255, 255, 0.02);
+        line-height: 1.65;
+        word-wrap: break-word;
+        white-space: pre-wrap; /* 保留换行符 */
       }
     </style>
   </head>
@@ -221,60 +110,32 @@
       </button>
     </nav>
 
+    <!-- 【布局调整】移除了 max-width: 900px，改为 100% 宽度实现全屏布局 -->
     <div
       class="container"
-      style="grid-template-columns: 1fr; max-width: 900px; padding-top: 20px"
+      style="grid-template-columns: 1fr; max-width: 100%; width: 100%; padding: 20px 40px; box-sizing: border-box;"
     >
       <a href="index.html" class="back-home"
         ><i class="fa fa-arrow-left"></i> 返回主页板</a
       >
 
-      <div class="diary-gallery" id="myDiaryList"></div>
-    </div>
-
-    <div class="fab-btn" id="openModalBtn" title="写日记">
-      <i class="fa fa-pencil"></i>
-    </div>
-
-    <div class="modal-overlay" id="modalOverlay">
-      <div class="modal-card">
-        <div class="modal-header">
-          <div class="modal-title"><i class="fa fa-lock"></i> 站长发布通道</div>
-          <div class="modal-close" id="closeModalBtn">
-            <i class="fa fa-times"></i>
-          </div>
+      <!-- 用于展示的画廊容器 -->
+      <div class="diary-gallery" id="myDiaryList">
+        <div style="text-align:center; color:#94a3b8; font-size:14px; padding: 60px 0; width:100%;">
+          <i class="fa fa-spinner fa-spin"></i> 正在唤醒深处记忆...
         </div>
-        <input
-          type="password"
-          id="adminPwd"
-          class="password-input"
-          placeholder="请破译管理员暗号..."
-        />
-        <textarea
-          class="diary-input"
-          id="adminContent"
-          placeholder="今天有什么想刻在岁月里的故事吗？..."
-          style="min-height: 130px; margin-bottom: 15px; border-radius: 12px"
-        ></textarea>
-        <button class="publish-btn" id="adminPublishBtn" style="float: right">
-          完成记录
-        </button>
-        <div style="clear: both"></div>
       </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-      // 1. 初始化数据库
-      const supabaseUrl = "https://gtgmqumuqxnuvoacsnxg.supabase.co";
-      const supabaseKey =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0Z21xdW11cXhudXZvYWNzbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTA3NzIsImV4cCI6MjA5NTUyNjc3Mn0.7sI9kmqymPr0LiZJodd4oZj3oF4GJYTewcYknVFxrwA";
-      const db = supabase.createClient(supabaseUrl, supabaseKey);
+      const SUPABASE_URL = "https://gtgmqumuqxnuvoacsnxg.supabase.co";
+      const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0Z21xdW11cXhudXZvYWNzbnhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTA3NzIsImV4cCI6MjA5NTUyNjc3Mn0.7sI9kmqymPr0LiZJodd4oZj3oF4GJYTewcYknVFxrwA";
+      const headers = {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+      };
 
-      // 自定义你的发布暗号
-      const ADMIN_PASSWORD = "key";
-
-      // 2. 与主页共享同一个主题控制（默认夜间）
+      // 主题控制逻辑
       const modeBtn = document.getElementById("modeBtn");
       const body = document.body;
       let isDark = localStorage.getItem("theme_dark") !== "false";
@@ -296,111 +157,94 @@
         updateThemeUI();
       });
 
-      // 3. 弹窗显示/隐藏交互控制
-      const modalOverlay = document.getElementById("modalOverlay");
-      const openModalBtn = document.getElementById("openModalBtn");
-      const closeModalBtn = document.getElementById("closeModalBtn");
+      // 安全防注入转义函数
+      function escapeHtml(str) {
+        return String(str).replace(
+          /[&<>\"']/g,
+          (s) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            })[s],
+        );
+      }
 
-      openModalBtn.addEventListener("click", () => {
-        modalOverlay.classList.add("active");
-        document.getElementById("adminPwd").focus();
-      });
-
-      closeModalBtn.addEventListener("click", () => {
-        modalOverlay.classList.remove("active");
-      });
-
-      modalOverlay.addEventListener("click", (e) => {
-        if (e.target === modalOverlay) {
-          modalOverlay.classList.remove("active");
-        }
-      });
-
-      // 4. 读取加载专属日记（渲染为错落拼图样式）
       const myDiaryList = document.getElementById("myDiaryList");
 
       async function fetchMyDiaries() {
-        let { data: list, error } = await db
-          .from("my_diaries")
-          .select("*")
-          .order("time", { ascending: false });
+        try {
+          const response = await fetch(`${SUPABASE_URL}/rest/v1/diary`, {
+            method: "GET",
+            headers: headers,
+          });
+          
+          if (!response.ok) {
+            throw new Error(`服务器响应失败 (状态码: ${response.status})`);
+          }
+          
+          let list = await response.json();
 
-        if (error) {
-          console.error(error);
-          return;
+          // 按时间倒序排列
+          list.sort((a, b) => {
+            let timeA = new Date(a.time.replace(/-/g, '/')).getTime() || 0;
+            let timeB = new Date(b.time.replace(/-/g, '/')).getTime() || 0;
+            return timeB - timeA;
+          });
+
+          myDiaryList.innerHTML = "";
+          if (list.length === 0) {
+            myDiaryList.innerHTML = `<div style="text-align:center; color:#94a3b8; font-size:14px; padding: 60px 0; width:100%;">目前还没有写下任何日记哦~</div>`;
+            return;
+          }
+
+          list.forEach((item) => {
+            const div = document.createElement("div");
+            div.className = "my-diary-item";
+
+            // 🎲 调整随机算法，让大卡片更加和谐 🎲
+            const randomRotate = (Math.random() * 6 - 3).toFixed(1); // 【收敛角度】大卡片适合微调，旋转控制在 -3deg ~ +3deg 之间
+            const randomY = (Math.random() * 16 - 8).toFixed(0); // 高低错落 (-8px ~ +8px)
+            const randomWidth = Math.floor(Math.random() * 80) + 280; // 【卡片变大】卡片宽度随机范围调大为 (280px ~ 360px)
+            const randomFontSize = (Math.random() * 2 + 14).toFixed(1); // 【字号微调】更加舒缓的字号 (14px ~ 16px)
+
+            div.style.transform = `rotate(${randomRotate}deg) translateY(${randomY}px)`;
+            div.style.width = `${randomWidth}px`;
+            div.style.fontSize = `${randomFontSize}px`;
+
+            // 📅 【显示具体几点几分】提取完整的“年-月-日 时:分”，过滤掉可能存在的秒数尾巴
+            let fullTimeStr = "未知时间";
+            if (item.time) {
+              // 假设格式为 "2026-05-31 15:57:02" -> 截取为 "2026-05-31 15:57"
+              const parts = item.time.split(":");
+              if (parts.length >= 2) {
+                fullTimeStr = parts[0] + ":" + parts[1];
+              } else {
+                fullTimeStr = item.time;
+              }
+            }
+            
+            const recordName = item.nickname || "NAHK";
+
+            div.innerHTML = `
+              <div class="diary-meta">
+                <span class="diary-user"><i class="fa fa-bookmark"></i> ${escapeHtml(recordName)}</span>
+                <span class="diary-time"><i class="fa fa-clock-o"></i> ${escapeHtml(fullTimeStr)}</span>
+              </div>
+              <div class="diary-content" style="font-size: inherit; line-height: 1.6; white-space: pre-wrap; word-wrap: break-word;">${escapeHtml(item.content)}</div>
+            `;
+            myDiaryList.appendChild(div);
+          });
+        } catch (e) {
+          console.error(e);
+          myDiaryList.innerHTML = `<div style="text-align:center; color:#ef4444; font-size:14px; padding: 60px 0; width:100%;"><i class="fa fa-exclamation-triangle"></i> 数据唤醒失败: ${e.message}</div>`;
         }
-
-        myDiaryList.innerHTML = "";
-        if (list.length === 0) {
-          myDiaryList.innerHTML = `<div style="text-align:center; color:#94a3b8; font-size:14px; padding: 60px 0; width:100%;">目前还没有写下任何日记哦~</div>`;
-          return;
-        }
-
-        list.forEach((item) => {
-          const div = document.createElement("div");
-          div.className = "my-diary-item";
-
-          // 🎲 保持个性化随机布局范围控制 🎲
-          const randomRotate = (Math.random() * 13 - 6.5).toFixed(1); // 旋转角度 (-6.5deg ~ +6.5deg)
-          const randomY = (Math.random() * 20 - 10).toFixed(0); // 水平线高低错落 (-10px ~ +10px)
-          const randomWidth = Math.floor(Math.random() * 50) + 140; // 卡片宽度随机 (140px ~ 190px)
-          const randomFontSize = (Math.random() * 2.5 + 12.5).toFixed(1); // 字体大小随机 (12.5px ~ 15px)
-
-          div.style.transform = `rotate(${randomRotate}deg) translateY(${randomY}px)`;
-          div.style.width = `${randomWidth}px`;
-          div.style.fontSize = `${randomFontSize}px`;
-
-          // 📅 【这里已修改】：通过 split(' ')[0] 提取出完整的“年份-月份-日期”（舍弃具体时分秒，保持美观）
-          const fullDate = item.time.split(" ")[0];
-
-          div.innerHTML = `
-            <div class="diary-meta">
-              <span class="diary-user"><i class="fa fa-bookmark"></i> NAHK</span>
-              <span class="diary-time">${fullDate}</span>
-            </div>
-            <div class="diary-content" style="font-size: inherit; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word;">${item.content}</div>
-          `;
-          myDiaryList.appendChild(div);
-        });
       }
 
+      // 执行加载
       fetchMyDiaries();
-
-      // 5. 弹窗内安全发布逻辑
-      const adminPublishBtn = document.getElementById("adminPublishBtn");
-      const adminPwd = document.getElementById("adminPwd");
-      const adminContent = document.getElementById("adminContent");
-
-      adminPublishBtn.addEventListener("click", async () => {
-        const pwd = adminPwd.value.trim();
-        const content = adminContent.value.trim();
-
-        if (pwd !== ADMIN_PASSWORD) {
-          alert("暗号不正确，无权录入专属日记！");
-          return;
-        }
-        if (!content) {
-          alert("写点什么再点击记录吧~");
-          return;
-        }
-
-        const now = new Date();
-        const time = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")} ${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
-
-        const { error } = await db
-          .from("my_diaries")
-          .insert([{ content: content, time: time }]);
-
-        if (error) {
-          alert("发布失败，请检查数据库配置！");
-          console.error(error);
-        } else {
-          adminContent.value = "";
-          adminPwd.value = "";
-          modalOverlay.classList.remove("active");
-          fetchMyDiaries();
-        }
-      });
     </script>
   </body>
 </html>
