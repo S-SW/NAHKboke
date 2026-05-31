@@ -26,21 +26,15 @@
         text-decoration: underline;
       }
 
-      /* ==================== 1. 更加宽松、全屏的瀑布流画廊布局 ==================== */
+      /* ==================== 1. 真正的瀑布流自适应布局 ==================== */
       .diary-gallery {
-        display: flex;
-        flex-wrap: wrap; /* 允许卡片折行平铺 */
-        gap: 24px; /* 【调大】卡片之间的基础间距，更加宽松 */
+        /* 🔥 改用 column 布局，让卡片能够打破行的限制，自动向上补位 */
+        column-width: 260px; /* 每列的标准宽度，浏览器会根据全屏自动计算分成几列 */
+        column-gap: 24px;   /* 列与列之间的间距 */
         width: 100%;
-        justify-content: center; /* 居中错落分布 */
+        max-width: 1400px;  /* 限制最大全屏宽度，避免超大屏拉得太开 */
+        margin: 0 auto;
         padding: 20px 0;
-      }
-
-      /* 当屏幕比较窄（比如手机端）时，自动缩减为一列展示 */
-      @media (max-width: 768px) {
-        .diary-gallery {
-          column-count: 1;
-        }
       }
 
       /* ==================== 错落卡片基础样式 ==================== */
@@ -48,11 +42,17 @@
         /* 基础结构 */
         background: var(--card-bg-day) !important;
         border: 1px solid rgba(0, 0, 0, 0.05) !important;
-        border-radius: 16px !important; /* 【调大】圆角更现代 */
-        padding: 20px !important; /* 【调大】内边距，让卡片内部更舒缓 */
+        border-radius: 16px !important; 
+        padding: 16px !important; 
         box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.04);
+        
+        /* 🔥 关键属性：防止卡片在瀑布流分栏时被无情切断 */
+        break-inside: avoid;
+        margin-bottom: 24px; /* 卡片上下的上下间距 */
+        
         display: flex;
         flex-direction: column;
+        height: auto !important;
 
         /* 丝滑的交互过渡 */
         transition:
@@ -70,8 +70,8 @@
 
       /* 鼠标悬浮到某个卡片时：立刻“摆正”并放大拔高 */
       .my-diary-item:hover {
-        transform: scale(1.08) rotate(0deg) translateY(-8px) !important; /* 强制拉正浮起（大卡片缩放1.08最舒适） */
-        z-index: 50; /* 悬浮时处于最上层，不被挡住 */
+        transform: scale(1.06) rotate(0deg) translateY(-6px) !important; 
+        z-index: 50; 
         box-shadow: 0 15px 30px rgba(99, 102, 241, 0.25) !important;
         border-color: rgba(99, 102, 241, 0.5) !important;
       }
@@ -95,10 +95,192 @@
 
       /* 日记内容文本排版 */
       .diary-content {
-        font-size: 15px;
+        font-size: 14px; 
         line-height: 1.65;
         word-wrap: break-word;
-        white-space: pre-wrap; /* 保留换行符 */
+        white-space: pre-wrap; 
+      }
+
+      /* ==================== 新增：时光长廊图片卡片核心样式 ==================== */
+      .photo-stack-container {
+        position: relative;
+        max-width: 100%;
+        width: 100%;
+        aspect-ratio: 4/3;
+        margin: 0 auto 14px auto;
+        user-select: none;
+      }
+      .photo-single-item {
+        max-width: 100%;
+        width: 100%;
+        aspect-ratio: 4/3;
+        margin: 0 auto 14px auto;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(100,116,139,0.15);
+        cursor: zoom-in;
+      }
+      .photo-single-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .photo-stack-item {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        transition: all 0.3s ease;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid rgba(100,116,139,0.2);
+        background: #f1f5f9;
+      }
+      body.dark .photo-stack-item {
+        background: #0f172a;
+        border-color: rgba(255,255,255,0.05);
+      }
+      .photo-stack-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        cursor: zoom-in;
+      }
+      /* 时光长廊卡片层级样式声明 */
+      .z-30 { z-index: 30; opacity: 1; transform: scale(1) rotate(0deg); }
+      .z-20 { z-index: 20; opacity: 0.85; transform: rotate(7deg) translate(6px, 2px) scale(0.96); }
+      .z-10 { z-index: 10; opacity: 0.70; transform: rotate(-7deg) translate(-5px, 4px) scale(0.92); }
+      .photo-hidden { display: none !important; }
+
+      /* 时光长廊切换按钮样式 */
+      .stack-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: rgba(0,0,0,0.4);
+        color: #fff;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        cursor: pointer;
+        z-index: 40;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .photo-stack-container:hover .stack-nav-btn {
+        opacity: 1;
+      }
+      .stack-nav-btn:hover {
+        background: rgba(0,0,0,0.6);
+      }
+      .stack-btn-left { left: 6px; }
+      .stack-btn-right { right: 6px; }
+      
+      .stack-indicator {
+        position: absolute;
+        bottom: 6px;
+        right: 6px;
+        padding: 2px 6px;
+        border-radius: 6px;
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        font-size: 9px;
+        font-family: monospace;
+        z-index: 40;
+        transform: scale(0.9);
+      }
+
+      /* 全局大图遮罩层样式 */
+      #globalLightbox {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.9);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        user-select: none;
+      }
+      #globalLightbox.lightbox-active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .lightbox-close-btn {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.2s;
+        z-index: 10005;
+      }
+      .lightbox-close-btn:hover { background: rgba(255,255,255,0.2); }
+      .lightbox-content-wrap {
+        position: relative;
+        width: 100%;
+        max-width: 1024px;
+        max-height: 80vh;
+        padding: 0 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+      .lightbox-arrow {
+        position: absolute;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .lightbox-arrow:hover { background: rgba(255,255,255,0.1); }
+      .lightbox-arrow-left { left: 16px; }
+      .lightbox-arrow-right { right: 16px; }
+      #lightboxImg {
+        max-width: 100%;
+        max-height: 80vh;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        border: 1px solid rgba(255,255,255,0.05);
+      }
+      #lightboxIndicator {
+        margin-top: 16px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        font-size: 12px;
+        font-family: monospace;
+        color: #cbd5e1;
       }
     </style>
   </head>
@@ -110,7 +292,6 @@
       </button>
     </nav>
 
-    <!-- 【布局调整】移除了 max-width: 900px，改为 100% 宽度实现全屏布局 -->
     <div
       class="container"
       style="grid-template-columns: 1fr; max-width: 100%; width: 100%; padding: 20px 40px; box-sizing: border-box;"
@@ -172,6 +353,125 @@
         );
       }
 
+      // ==================== 解析和渲染相册的工具函数 ====================
+      let lightboxPhotos = [];
+      let lightboxIndex = 0;
+
+      function parsePhotos(photoStr) {
+        if (!photoStr || photoStr === "NULL" || photoStr.trim() === "") return [];
+        return photoStr.split(/[,，]/).map(url => url.trim()).filter(url => url !== "");
+      }
+
+      function renderDiaryGalleryHTML(photos) {
+        if (photos.length === 0) return ""; 
+        
+        if (photos.length === 1) {
+            return `
+                <div class="photo-single-item" onclick="openGlobalLightbox(${JSON.stringify(photos).replace(/"/g, '&quot;')}, 0)">
+                  <img src="${escapeHtml(photos[0])}" alt="时光剪影" referrerpolicy="no-referrer" />
+                </div>
+            `;
+        }
+
+        let imagesStackHtml = "";
+        photos.forEach((url, index) => {
+            let transformClass = "z-30";
+            if (index === 1) transformClass = "z-20";
+            if (index === 2) transformClass = "z-10";
+            if (index > 2) transformClass = "photo-hidden";
+
+            imagesStackHtml += `
+                <div data-index="${index}" class="photo-stack-item transition-all ${transformClass}">
+                    <img src="${escapeHtml(url)}" alt="配图" referrerpolicy="no-referrer" onclick="event.stopPropagation(); openGlobalLightbox(${JSON.stringify(photos).replace(/"/g, '&quot;')}, ${index})" />
+                </div>
+            `;
+        });
+
+        return `
+            <div class="photo-stack-container">
+                <div style="position: relative; width: 100%; height: 100%;">
+                    ${imagesStackHtml}
+                </div>
+                <button onclick="event.stopPropagation(); switchStackPhoto(this, -1)" class="stack-nav-btn stack-btn-left">
+                    <i class="fa fa-chevron-left"></i>
+                </button>
+                <button onclick="event.stopPropagation(); switchStackPhoto(this, 1)" class="stack-nav-btn stack-btn-right">
+                    <i class="fa fa-chevron-right"></i>
+                </button>
+                <div class="stack-indicator">
+                    <span class="active-idx">1</span>/${photos.length}
+                </div>
+            </div>
+        `;
+      }
+
+      window.switchStackPhoto = function(btn, dir) {
+        const galleryContainer = btn.parentElement;
+        const items = galleryContainer.querySelectorAll('.photo-stack-item');
+        const idxBadge = galleryContainer.querySelector('.active-idx');
+        if (items.length <= 1) return;
+
+        let currentActiveIdx = 0;
+        items.forEach((item, i) => { if (item.classList.contains('z-30')) currentActiveIdx = i; });
+
+        let nextActiveIdx = (currentActiveIdx + dir + items.length) % items.length;
+        idxBadge.textContent = nextActiveIdx + 1;
+
+        items.forEach((item, index) => {
+            item.className = "photo-stack-item transition-all";
+            let relativePos = (index - nextActiveIdx + items.length) % items.length;
+            if (relativePos === 0) item.classList.add('z-30');
+            else if (relativePos === 1) item.classList.add('z-20');
+            else if (relativePos === 2) item.classList.add('z-10');
+            else item.classList.add('photo-hidden');
+        });
+      };
+
+      window.openGlobalLightbox = function(photos, index) {
+        lightboxPhotos = photos;
+        lightboxIndex = index;
+        let lightbox = document.getElementById('globalLightbox');
+        if (!lightbox) {
+            lightbox = document.createElement('div');
+            lightbox.id = 'globalLightbox';
+            lightbox.innerHTML = `
+                <button onclick="closeGlobalLightbox()" class="lightbox-close-btn"><i class="fa fa-times"></i></button>
+                <div class="lightbox-content-wrap">
+                    <button onclick="changeLightboxPhoto(-1)" class="lightbox-arrow lightbox-arrow-left"><i class="fa fa-chevron-left"></i></button>
+                    <img id="lightboxImg" src="" referrerpolicy="no-referrer" />
+                    <button onclick="changeLightboxPhoto(1)" class="lightbox-arrow lightbox-arrow-right"><i class="fa fa-chevron-right"></i></button>
+                </div>
+                <div id="lightboxIndicator">1 / 1</div>
+            `;
+            document.body.appendChild(lightbox);
+            window.addEventListener('keydown', (e) => {
+                if (!document.getElementById('globalLightbox').classList.contains('lightbox-active')) return;
+                if (e.key === 'Escape') closeGlobalLightbox();
+                if (e.key === 'ArrowLeft') changeLightboxPhoto(-1);
+                if (e.key === 'ArrowRight') changeLightboxPhoto(1);
+            });
+        }
+        updateLightboxDOM();
+        lightbox.classList.add('lightbox-active');
+      };
+
+      window.closeGlobalLightbox = function() {
+        document.getElementById('globalLightbox').classList.remove('lightbox-active');
+      };
+
+      window.changeLightboxPhoto = function(dir) {
+        if (lightboxPhotos.length <= 1) return;
+        lightboxIndex = (lightboxIndex + dir + lightboxPhotos.length) % lightboxPhotos.length;
+        updateLightboxDOM();
+      };
+
+      function updateLightboxDOM() {
+        document.getElementById('lightboxImg').src = lightboxPhotos[lightboxIndex];
+        document.getElementById('lightboxIndicator').textContent = `${lightboxIndex + 1} / ${lightboxPhotos.length}`;
+      }
+
+      // ======================================================================
+
       const myDiaryList = document.getElementById("myDiaryList");
 
       async function fetchMyDiaries() {
@@ -204,20 +504,17 @@
             const div = document.createElement("div");
             div.className = "my-diary-item";
 
-            // 🎲 调整随机算法，让大卡片更加和谐 🎲
-            const randomRotate = (Math.random() * 6 - 3).toFixed(1); // 【收敛角度】大卡片适合微调，旋转控制在 -3deg ~ +3deg 之间
-            const randomY = (Math.random() * 16 - 8).toFixed(0); // 高低错落 (-8px ~ +8px)
-            const randomWidth = Math.floor(Math.random() * 80) + 280; // 【卡片变大】卡片宽度随机范围调大为 (280px ~ 360px)
-            const randomFontSize = (Math.random() * 2 + 14).toFixed(1); // 【字号微调】更加舒缓的字号 (14px ~ 16px)
+            // 🎲 随机偏转与随机字号算法 🎲
+            const randomRotate = (Math.random() * 4 - 2).toFixed(1); // 瀑布流中旋转角度微调 (-2deg ~ +2deg) 更精致
+            const randomFontSize = (Math.random() * 1 + 13.5).toFixed(1); 
 
-            div.style.transform = `rotate(${randomRotate}deg) translateY(${randomY}px)`;
-            div.style.width = `${randomWidth}px`;
+            div.style.transform = `rotate(${randomRotate}deg)`;
+            div.style.width = `100%`; /* 🔥 瀑布流下宽度交由 column-width 自动完美控制 */
             div.style.fontSize = `${randomFontSize}px`;
 
-            // 📅 【显示具体几点几分】提取完整的“年-月-日 时:分”，过滤掉可能存在的秒数尾巴
+            // 📅 提取完整的“年-月-日 时:分”
             let fullTimeStr = "未知时间";
             if (item.time) {
-              // 假设格式为 "2026-05-31 15:57:02" -> 截取为 "2026-05-31 15:57"
               const parts = item.time.split(":");
               if (parts.length >= 2) {
                 fullTimeStr = parts[0] + ":" + parts[1];
@@ -228,7 +525,12 @@
             
             const recordName = item.nickname || "NAHK";
 
+            // 🛠️ 提取并解析图片内容
+            const photos = parsePhotos(item.photo);
+            const imageHtml = renderDiaryGalleryHTML(photos);
+
             div.innerHTML = `
+              ${imageHtml}
               <div class="diary-meta">
                 <span class="diary-user"><i class="fa fa-bookmark"></i> ${escapeHtml(recordName)}</span>
                 <span class="diary-time"><i class="fa fa-clock-o"></i> ${escapeHtml(fullTimeStr)}</span>
