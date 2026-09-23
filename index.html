@@ -38,12 +38,12 @@
               class="social-link"
               >NAHK209259@outlook.com</a
             >
-                        <a
+            <a
               href="mailto:2092594167@qq.com?subject=来自NAHKder博客的访客留言"
               class="social-link"
               >2092594167@qq.com</a
             >
-                        <a
+            <a
               href="mailto:ahkn5951@gmail.com?subject=来自NAHKder博客的访客留言"
               class="social-link"
               >ahkn5951@gmail.com</a
@@ -62,24 +62,6 @@
             >
           </p>
           <p>
-            <i class="fa fa-video-camera"></i>抖音：
-            <a
-              href="https://v.douyin.com/ko1Z4-KZ7Rs/ 8@3.com :9pm"
-              target="_blank"
-              class="social-link"
-              >@杀生丸-f</a
-            >
-          </p>
-          <p>
-            <i class="fa fa-television"></i>bilibili：
-            <a
-              href="https://space.bilibili.com/476104116"
-              target="_blank"
-              class="social-link"
-              >杀生丸-f</a
-            >
-          </p>
-          <p>
             <i class="fa fa-github"></i>github：
             <a
               href="https://github.com/S-SW"
@@ -94,30 +76,35 @@
       <div class="ios-card diary-card">
         <div class="card-header-bar">
           <h3 class="card-title"><i class="fa fa-book-o"></i>给我留言~</h3>
-          <a href="NAHKrj.html" class="diary-link-btn">
-            <i class="fa fa-pencil-square-o"></i> NAHK的日记
+          <a href="yxdt.html" class="diary-link-btn">
+            <i class="fa fa-pencil-square-o"></i> 一些动态
           </a>
         </div>
 
-        <input
-          type="text"
-          class="username-input"
-          id="usernameInput"
-          placeholder="输入想显示的昵称"
-        />
+        <div class="diary-form-box">
+          <div class="form-row-top">
+            <input
+              type="text"
+              class="username-input"
+              id="usernameInput"
+              placeholder="输入想显示的昵称"
+            />
+            <button class="publish-btn" id="publishBtn">发布</button>
+          </div>
 
-        <textarea
-          class="diary-input"
-          id="diaryInput"
-          placeholder="想到什么说什么..."
-        ></textarea>
-        <button class="publish-btn" id="publishBtn">发布</button>
+          <div class="form-row-bottom">
+            <textarea
+              class="diary-input"
+              id="diaryInput"
+              placeholder="想到什么说什么..."
+            ></textarea>
+          </div>
+        </div>
 
         <div class="diary-list" id="diaryList"></div>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
     <script src="blog.js"></script>
   </body>
 </html>

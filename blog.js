@@ -6,13 +6,11 @@ const supabaseKey =
 const db = supabase.createClient(supabaseUrl, supabaseKey);
 
 // ==================== 2. 敏感词与规则配置 ====================
-// 昵称黑名单 (对应 mzgz.txt)
 const nameBlacklist = [
   "范帝", "帝范", "范康", "康范", "帝康", "康帝", 
   "范帝康", "范康帝", "帝范康", "帝康范", "康范帝", "康帝范"
 ];
 
-// 留言内容敏感词库 (对应 mr.txt)
 const textBlacklist = [
   "傻逼", "傻B", "沙比", "煞笔", "SB", "蠢货", "白痴", "智障", "脑残", "废物", 
   "垃圾", "人渣", "混蛋", "王八蛋", "狗东西", "狗杂种", "畜生", "操你妈", "草你妈", 
@@ -27,7 +25,6 @@ const textBlacklist = [
 const modeBtn = document.getElementById("modeBtn");
 const body = document.body;
 
-// 【修改这里】：如果本地存储没有记录，默认给 true（也就是夜间模式）
 let isDark = localStorage.getItem("theme_dark") !== "false"; 
 
 function updateThemeUI() {
@@ -40,24 +37,22 @@ function updateThemeUI() {
   }
 }
 
-// 立即渲染主题
 updateThemeUI();
 
-// 监听按钮点击
 if (modeBtn) {
   modeBtn.addEventListener("click", () => {
     isDark = !isDark;
-    localStorage.setItem("theme_dark", isDark); // 写入共享存储
+    localStorage.setItem("theme_dark", isDark); 
     updateThemeUI();
   });
 }
+
 // ==================== 4. 云端留言/日记功能 ====================
 const publishBtn = document.getElementById("publishBtn");
 const usernameInput = document.getElementById("usernameInput");
 const diaryInput = document.getElementById("diaryInput");
 const diaryList = document.getElementById("diaryList");
 
-// 联网渲染：从 Supabase 下载所有人的留言
 async function renderDiary() {
   let { data: list, error } = await db
     .from("diaries")
@@ -87,25 +82,20 @@ async function renderDiary() {
   });
 }
 
-// 页面一打开，就自动加载云端留言
 renderDiary();
 
-// 联网发布：把新内容推送到云端数据库
 publishBtn.addEventListener("click", async () => {
   const content = diaryInput.value.trim();
   let username = usernameInput.value.trim();
 
-  // 1. 非空检查
   if (!content) {
     alert("请输入留言内容！？");
     return;
   }
 
-  // 2. 限流检查：一分钟内不能超过两条
   const nowTimestamp = Date.now();
   let publishHistory = JSON.parse(localStorage.getItem("publish_history") || "[]");
   
-  // 过滤掉超过 1 分钟（60000 毫秒）之前的记录
   publishHistory = publishHistory.filter(timestamp => nowTimestamp - timestamp < 60000);
   
   if (publishHistory.length >= 2) {
@@ -113,11 +103,9 @@ publishBtn.addEventListener("click", async () => {
     return;
   }
 
-  // 3. 昵称检查与过滤
   if (!username) {
     username = "匿名用户";
   } else {
-    // 检查是否使用了黑名单昵称
     const isForbiddenName = nameBlacklist.some(name => username.includes(name));
     if (isForbiddenName) {
       alert("该昵称包含敏感词汇，无法使用！");
@@ -125,19 +113,15 @@ publishBtn.addEventListener("click", async () => {
     }
   }
 
-  // 4. 留言内容敏感词检查
   const hasSensitiveWord = textBlacklist.some(word => content.toLowerCase().includes(word.toLowerCase()));
   if (hasSensitiveWord) {
     alert("您的留言中包含不文明或敏感词汇，请文明发言！");
     return;
   }
 
-  // ---- 校验全部通过，开始发送 ----
-
   const now = new Date();
   const time = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")} ${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`;
 
-  // 将数据插入到 diaries 表中
   const { error } = await db
     .from("diaries")
     .insert([{ content: content, time: time, username: username }]);
@@ -146,12 +130,11 @@ publishBtn.addEventListener("click", async () => {
     alert("发送失败，请检查网络、密钥或 Supabase 的 RLS 权限设置！");
     console.error(error);
   } else {
-    // 成功发布后，记录当前时间戳到本地缓存
     publishHistory.push(nowTimestamp);
     localStorage.setItem("publish_history", JSON.stringify(publishHistory));
 
-    diaryInput.value = ""; // 清空留言框
-    usernameInput.value = ""; // 清空昵称框
-    renderDiary(); // 重新加载列表
+    diaryInput.value = ""; 
+    usernameInput.value = ""; 
+    renderDiary(); 
   }
 });
